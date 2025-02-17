@@ -2,7 +2,6 @@
 
 pragma solidity >=0.5.0 <0.9.0;
  
- 
 contract CrowdFunding {
     mapping(address => uint) public contributors;
     address public admin;
@@ -33,7 +32,6 @@ contract CrowdFunding {
     event CreateRequestEvent(string _description, address _recipient, uint _value);
     event MakePaymentEvent(address _recipient, uint _value);
     
-    
     constructor(uint _goal, uint _deadline) {
         goal = _goal;
         deadline = block.timestamp + _deadline;
@@ -41,12 +39,10 @@ contract CrowdFunding {
         minimumContribution = 100 wei;
     }
     
-   
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can execute this");
         _;
     }
-    
     
     function contribute() public payable {
         require(block.timestamp < deadline, "The Deadline has passed!");
@@ -64,12 +60,10 @@ contract CrowdFunding {
         emit ContributeEvent(msg.sender, msg.value);
     }
     
- 
     function getBalance() public view returns(uint) {
         return address(this).balance;
     }
     
- 
     // a contributor can get a refund if goal was not reached within the deadline
     function getRefund() public {
         require(block.timestamp > deadline, "Deadline has not passed");
@@ -86,7 +80,6 @@ contract CrowdFunding {
  
     }
     
-    
     function createRequest(string calldata _description, address payable _recipient, uint _value) public onlyAdmin {
         //numRequests starts from zero
         Request storage newRequest = requests[numRequests];
@@ -101,7 +94,6 @@ contract CrowdFunding {
         emit CreateRequestEvent(_description, _recipient, _value);
     }
     
-    
     function voteRequest(uint _requestNo) public {
         require(contributors[msg.sender] > 0, "You must be a contributor to vote!");
         
@@ -111,7 +103,6 @@ contract CrowdFunding {
         thisRequest.voters[msg.sender] = true;
         thisRequest.noOfVoters++;
     }
-    
     
     function makePayment(uint _requestNo) public onlyAdmin {
         Request storage thisRequest = requests[_requestNo];
