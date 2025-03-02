@@ -114,5 +114,4 @@ contract CrowdFunding {
         
         emit MakePaymentEvent(thisRequest.recipient, thisRequest.value);
     }
-    
 }
